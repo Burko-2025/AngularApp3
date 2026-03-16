@@ -1,0 +1,84 @@
+.book-list-container {
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.book-list-container h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #333;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding: 10px;
+  border-radius: 4px;
+ 
+}
+.alert-success {
+  color: #3c763d;
+  width: 30%;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  padding: 10px;
+  border-radius: 4px;
+  
+}
+ 
+/* Each contact row styled like a card */
+
+.contact-card {
+  background: #f9f9f9;
+  padding: 16px 8px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background 0.3s ease;
+}
+ 
+.contact-card:hover {
+  background: #f1f1f1;
+}
+ 
+.contact-field {
+  font-size: 15px;
+  color: #444;
+}
+ 
+.contact-image {
+  width: 80px;
+  height: 80px;
+  object-fit: fill;
+  border-radius: 20%;
+  border: 2px solid #ccc;
+}
+ 
+/* Adjust spacing between action buttons */
+
+.contact-card .btn {
+  min-width: 70px;
+}
+ 
+/* Link button spacing */
+
+#links button {
+  margin: 0 8px;
+}
+ 
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #ccc;
+
+}
+ 

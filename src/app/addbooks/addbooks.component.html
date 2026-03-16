@@ -1,0 +1,161 @@
+<!-- Main container for the Add Book form -->
+<div class="container">
+
+  <!-- Page heading -->
+  <h2 class="mt-4">Add Book</h2>
+
+  <!-- Error message display (shown if error variable has a value) -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Success message display (shown if success variable has a value) -->
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <!-- Angular template-driven form -->
+  <!-- #Form creates a reference to the form and ngSubmit triggers addBook() when submitted -->
+  <form #Form="ngForm" (ngSubmit)="addBook(Form)">
+
+    <!-- ================= TITLE FIELD ================= -->
+    <div class="form-group mb-3">
+
+      <!-- Label for title input -->
+      <label for="title" class="form-label">Title</label>
+
+      <!-- Input for book title
+           - ngModel binds the value to book.title
+           - required ensures field cannot be empty
+           - maxlength limits title to 100 characters
+           - #title creates a local reference to access validation state -->
+      <input
+        type="text"
+        id="title"
+        name="title"
+        class="form-control"
+        [(ngModel)]="book.title"
+        required
+        maxlength="100"
+        #title="ngModel"
+      />
+
+      <!-- Validation message shown if title exceeds 100 characters and field was touched -->
+      <div *ngIf="title.errors?.['maxlength'] && title.touched" class="alert-danger mt-1">
+        Title cannot exceed 100 characters or be empty.
+      </div>
+
+    </div>
+
+
+    <!-- ================= AUTHOR FIELD ================= -->
+    <div class="form-group">
+
+      <!-- Label for author -->
+      <label for="author" class="form-label">Author</label>
+
+      <!-- Input for author name
+           - bound to book.author
+           - required field
+           - maximum length of 50 characters -->
+      <input
+        type="text"
+        id="author"
+        name="author"
+        class="form-control"
+        [(ngModel)]="book.author"
+        required
+        maxlength="50"
+        #author="ngModel"
+      />
+
+      <!-- Validation message if author exceeds 50 characters -->
+      <div *ngIf="author.errors?.['maxlength'] && author.touched" class="alert-danger mt-1">
+        Author cannot exceed 50 characters or be empty.
+      </div>
+
+    </div>
+
+
+    <!-- ================= PAGES FIELD ================= -->
+    <div class="form-group mb-3">
+
+      <!-- Label for pages -->
+      <label for="pages" class="form-label">Pages</label>
+
+      <!-- Input for number of pages
+           - bound to book.pages
+           - required field -->
+      <input
+        type="text"
+        id="pages"
+        name="pages"
+        class="form-control"
+        [(ngModel)]="book.pages"
+        required
+        #pages="ngModel"
+      />
+
+      <!-- Validation message if pages field is empty -->
+      <div *ngIf="pages.errors?.['required'] && pages.touched" class="alert-danger mt-1">
+        Pages are required.
+      </div>
+
+    </div>
+
+
+    <!-- ================= PUBLISHER FIELD ================= -->
+    <div class="form-group mb-3">
+
+      <!-- Label for publisher -->
+      <label for="publisher" class="form-label">Publisher</label>
+
+      <!-- Input for publisher name
+           - bound to book.publisher
+           - required
+           - maximum 100 characters -->
+      <input
+        type="text"
+        id="publisher"
+        name="publisher"
+        class="form-control"
+        [(ngModel)]="book.publisher"
+        required
+        maxlength="100"
+        #publisher="ngModel"
+      />
+
+      <!-- Validation message if publisher exceeds max length -->
+      <div *ngIf="publisher.errors?.['maxlength'] && publisher.touched" class="alert-danger mt-1">
+        Publisher cannot exceed 100 characters or be empty.
+      </div>
+
+    </div>
+
+
+    <!-- ================= FORM BUTTONS ================= -->
+    <div>
+
+      <!-- Submit button
+           - disabled if form is invalid -->
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="Form.invalid">
+        Add Book
+      </button>
+
+      <!-- Cancel button
+           - triggers cancel() function and passes the form -->
+      <button
+        type="button"
+        class="btn btn-secondary ms-2"
+        (click)="cancel(Form)">
+        Cancel
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

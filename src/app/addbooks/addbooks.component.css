@@ -1,0 +1,57 @@
+#theForm, #theList, #links {
+    padding: 10px;
+    border: 2px solid black;
+    margin: 10px;
+}
+ 
+.form-group > input[type="text"], input[type="email"], input[type="date"], input[type="file"] {
+    width: 30%;
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline;
+}
+
+.form-group > label {
+    width: 10%;
+}
+.alert-danger {
+  color: #a94442;
+  width: 30%;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding: 10px;
+  border-radius: 4px;
+}
+.alert-success {
+  color: #3c763d;
+  width: 30%;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  padding: 10px;
+  border-radius: 4px;
+}
+.container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 30px;
+  background-color: #f9f9f9;
+}
+button {
+  margin-right: 10px;
+}
+ 
+#links {
+  margin-top: 20px;
+}
+ 
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #ccc;
+} 

@@ -1,0 +1,80 @@
+<!-- Main container for the book list page -->
+<div id="theList" class="book-list-container">
+
+  <!-- Page heading -->
+  <h2>Book List</h2>
+
+  <!-- Success message shown when an operation like update/delete succeeds -->
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <!-- Success message shown after adding a new book -->
+  <div *ngIf="addsuccess" class="alert alert-success">
+    {{ addsuccess }}
+  </div>
+
+  <!-- Message displayed if there are no books in the list -->
+  <p *ngIf="books.length === 0">No books available</p>
+
+  <!-- Message displayed if books exist -->
+  <p *ngIf="books.length > 0">Here are the available books:</p>
+  <br>
+
+  <!-- Header row for the book list columns -->
+  <div class="book-card row align-items-center">
+
+    <!-- Column heading for Title -->
+    <div class="col-2 book-field">
+      <u><strong>Title</strong></u>
+    </div>
+
+    <!-- Column heading for Author -->
+    <div class="col-2 book-field">
+      <u><strong>Author</strong></u>
+    </div>
+
+    <!-- Column heading for Pages -->
+    <div class="col-2 book-field">
+      <u><strong>Pages</strong></u>
+    </div>
+
+    <!-- Column heading for Publisher -->
+    <div class="col-2 book-field">
+      <u><strong>Publisher</strong></u>
+    </div>
+
+  </div>
+
+  <!-- Loop through the books array and display each book -->
+  <!-- *ngFor iterates through the books list -->
+  <!-- 'item' represents each book object -->
+  <!-- 'i' stores the index of the current book -->
+  <div *ngFor="let item of books; let i = index" class="book-card row align-items-center">
+
+    <!-- Display book title -->
+    <div class="col-2 book-field">{{ item.title }}</div>
+
+    <!-- Display book author -->
+    <div class="col-2 book-field">{{ item.author }}</div>
+
+    <!-- Display number of pages -->
+    <div class="col-2 book-field">{{ item.pages }}</div>
+
+    <!-- Display publisher -->
+    <div class="col-2 book-field">{{ item.publisher }}</div>
+
+  </div>
+
+</div>
+
+<!-- Section containing navigation buttons -->
+<div id="links" class="mt-4 text-center">
+
+  <!-- Button to navigate to the Add Book page -->
+  <!-- routerLink directs Angular routing to the /add path -->
+  <button class="btn btn-sm btn-primary me-2" routerLink="/add">
+    Add Book
+  </button>
+
+</div>
