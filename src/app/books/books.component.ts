@@ -48,7 +48,7 @@ export class BooksComponent implements OnInit {
     title: '',
     author: '',
     pages: '',
-    publisher: '',
+    publisher: ''
   };
   
   // Variables used to store UI messages
@@ -105,5 +105,53 @@ export class BooksComponent implements OnInit {
     );
   }
 
+  // Method to delete a book by its ID
+  deleteBook(bookID: number): void {
+
+    // Show a confirmation popup before deleting
+    const confirmed = window.confirm("Are you sure you want to delete this book?");
+
+    // If user clicks "Cancel", stop the function
+    if (!confirmed) {
+      return;
+    }
+
+    // Clear any previous success or error messages
+    this.resetAlerts();
+
+    // Call the service to delete the book from the backend API
+    this.bookService.delete(bookID).subscribe({
+
+      // Runs if the delete request is successful
+      next: () => {
+
+        // Remove the deleted book from the local array (UI update)
+        // Filter keeps all books EXCEPT the one with the matching ID
+        this.books = this.books.filter(
+          item => item.bookID && +item.bookID != +bookID
+        );
+
+        // Display success message to the user
+        this.success = "Deleted successfully";
+      },
+
+      // Runs if there is an error during the delete request
+      error: err => {
+        // Store the error message so it can be shown in the UI
+        this.error = err.message;
+      }
+    });
+  }
+
+
+  // Method to clear alert messages
+  resetAlerts(): void {
+
+    // Clear error message
+    this.error = '';
+
+    // Clear success message
+    this.success = '';
+  }
 }
 

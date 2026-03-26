@@ -60,4 +60,16 @@ export class BookService {
     );
   }
 
+  // Method to send a delete request to the backend API
+  delete(bookID: any) {
+
+    // Create HTTP query parameters and attach the bookID
+    // This will result in a URL like: /delete?bookID=123
+    const params = new HttpParams().set('bookID', bookID.toString());
+
+    // Send a GET request to the backend "delete" endpoint with the params
+    // The backend (PHP or other API) will read the bookID and delete that record
+    return this.http.get(`${this.baseUrl}/delete`, { params: params });
+  }
+
 }

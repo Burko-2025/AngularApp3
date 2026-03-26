@@ -50,7 +50,7 @@
   <!-- *ngFor iterates through the books list -->
   <!-- 'item' represents each book object -->
   <!-- 'i' stores the index of the current book -->
-  <div *ngFor="let item of books; let i = index" class="book-card row align-items-center">
+  <div *ngFor="let item of books; let i = index" class="book-card row align-items-center mb-2">
 
     <!-- Display book title -->
     <div class="col-2 book-field">{{ item.title }}</div>
@@ -64,6 +64,11 @@
     <!-- Display publisher -->
     <div class="col-2 book-field">{{ item.publisher }}</div>
 
+     <!-- Display delete button -->
+    <div class = "col-2 d-flex gap-2">
+      <button class="btn btn-danger btn-sm" (click)="deleteBook(item.bookID ?? 0)">Delete</button>
+    </div>    
+
   </div>
 
 </div>
@@ -76,5 +81,7 @@
   <button class="btn btn-sm btn-primary me-2" routerLink="/add">
     Add Book
   </button>
+
+  
 
 </div>
