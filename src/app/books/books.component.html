@@ -44,6 +44,9 @@
       <u><strong>Publisher</strong></u>
     </div>
 
+    <div class="col-2 book-field">
+      <u><strong>Cover</strong></u>
+    </div>    
   </div>
 
   <!-- Loop through the books array and display each book -->
@@ -63,6 +66,11 @@
 
     <!-- Display publisher -->
     <div class="col-2 book-field">{{ item.publisher }}</div>
+
+      <!-- Display cover image -->
+<div class="col-2 contact-field"> <img class ="book-image" src="http://localhost/BookAPI/uploads/{{ item.coverImage }}" alt="{{ item.title }} " /></div>
+    <div class = "col-2 d-flex gap-2">
+      <button class="btn btn-success btn-sm" [routerLink] = "['/update', item.bookID]">Update</button>
 
      <!-- Display delete button -->
     <div class = "col-2 d-flex gap-2">

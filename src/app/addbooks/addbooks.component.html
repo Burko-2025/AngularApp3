@@ -129,6 +129,11 @@
       <div *ngIf="publisher.errors?.['maxlength'] && publisher.touched" class="alert-danger mt-1">
         Publisher cannot exceed 100 characters or be empty.
       </div>
+    <!-- Form fields for image-->
+    <div class="form-group mb-3">
+      <label for="image" class="form-label">Cover</label>
+      <input type="file" id="image" name="image" class="form-control" (change)="onFileSelected($event)"/>
+    </div>
 
     </div>
 

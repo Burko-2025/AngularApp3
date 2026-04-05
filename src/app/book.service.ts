@@ -69,7 +69,32 @@ export class BookService {
 
     // Send a GET request to the backend "delete" endpoint with the params
     // The backend (PHP or other API) will read the bookID and delete that record
-    return this.http.get(`${this.baseUrl}/delete`, { params: params });
+    return this.http.delete(`${this.baseUrl}/delete`, { params: params });
   }
 
-}
+  // ================= UPDATE BOOK =================
+  // Sends updated book data to backend API
+  updateBook(book: Book) {
+
+    // HTTP PUT request to update endpoint
+    // Sends JSON object with "data" wrapper
+    return this.http.put(`${this.baseUrl}/update`, { data: book });
+
+    // ⚠️ NOTE:
+    // This sends JSON (NOT FormData)
+    // So it will NOT work for file uploads
+  }
+
+
+  // ================= GET BOOK BY ID =================
+  // Retrieves a single book from backend using its ID
+  getBookByID(bookID: any) {
+
+    // Sends GET request with bookID as query parameter
+    return this.http.get<Book>(
+      `http://localhost/BookAPI/view.php?bookID=${bookID}`
+    );
+
+    // Expected response: a single Book object
+  }
+  }

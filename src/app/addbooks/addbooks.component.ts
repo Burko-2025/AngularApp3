@@ -1,20 +1,20 @@
-// Import Angular core functionality
+// Import Angular core functionality (Component + lifecycle hook)
 import { Component, OnInit } from '@angular/core';
 
-// Import common Angular modules
+// Import common Angular modules (needed for ngIf, ngFor, forms, etc.)
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 
-// Import Book model
+// Import Book model (defines structure of a book object)
 import { Book } from '../book';
 
 // Import service used to communicate with backend API
 import { BookService } from '../book.service';
 
-// Import HTTP client module
+// Import HTTP client module (used for file upload requests)
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-// Import routing tools to navigate between pages
+// Import routing tools (used to navigate between pages)
 import { RouterModule, Router } from '@angular/router';
 
 
@@ -37,13 +37,17 @@ import { RouterModule, Router } from '@angular/router';
 
 export class AddbooksComponent implements OnInit {
 
-  // Book object bound to the form inputs
+  // Book object bound to the form inputs (ngModel connects form fields to this object)
   book: Book = {
     title: '',
     author: '',
     pages: '',
     publisher: '',
+    coverImage: '', // will store filename of uploaded image
   };
+
+  // Stores the actual file selected by the user
+  selectedFile: File | null = null;
 
   // Variables used to store UI messages
   error = '';      // Stores error message if request fails
@@ -53,69 +57,172 @@ export class AddbooksComponent implements OnInit {
 
   // Constructor injects dependencies
   constructor(
-    private bookService: BookService,  // Service used to interact with backend API
-    private http: HttpClient,          // HTTP client for API requests
-    private router: Router             // Router used for page navigation
+    private bookService: BookService,  // Handles API calls for books
+    private http: HttpClient,          // Used for uploading files
+    private router: Router             // Used for page navigation
   ) {}
 
   // Lifecycle hook that runs when the component loads
   ngOnInit(): void {}
 
 
-  // Function called when the form is submitted
+  // ================= ADD BOOK FUNCTION =================
+  // Called when the form is submitted
   addBook(form: NgForm) {
 
-      // Clear any previous alerts
-      this.resetAlerts();
+    // Clear previous success/error messages
+    this.resetAlerts();
 
-      // Call service method to send book data to the backend
-      this.bookService.addBook(this.book).subscribe(
+    // ✅ If user selected a file → upload image FIRST
+    if (this.selectedFile) {
 
-        // Success response
-        (response: Book) => {
+      // Create FormData object to send file to PHP
+      const formData = new FormData();
 
-          // Display success message
-          this.success = 'Successfully created!';
+      // 'image' must match $_FILES['image'] in PHP
+      formData.append('image', this.selectedFile);
 
-          // Reset the form fields
-          form.resetForm();
+      // Send POST request to upload.php
+      this.http.post<any>('http://localhost/BookAPI/upload.php', formData).subscribe({
 
-          // Navigate to books list page and send success message
-          this.router.navigate(['/books'], {
-            state: { addsuccess: 'Book added successfully!' }
-          });
+        // Runs when upload is successful
+        next: (res) => {
+          console.log("UPLOAD RESPONSE:", res);
+
+          // Save returned filename into book object
+          // (this is what gets stored in database)
+          this.book.coverImage = res.fileName;
+
+          // Now that image is uploaded → save book info to DB
+          this.saveBook(form);
         },
 
-        // Error response
-        (err) => {
+        // Runs if upload fails
+        error: (err) => {
+          console.error("Upload failed:", err);
 
-          // Display appropriate error message
-          this.error = err.error?.message || err.message ||
-          'An error occurred while creating the book.';
+          // Show error message to user
+          this.error = err.error?.error || 'Image upload failed';
         }
-      );
+      });
+
+    } else {
+      // ✅ No image selected → use default placeholder
+      this.book.coverImage = 'placeholder_100.jpg';
+
+      // Save book directly
+      this.saveBook(form);
+    }
   }
 
 
-  // Function triggered when user clicks Cancel
+  // ================= SAVE BOOK TO DATABASE =================
+  // This function sends book data (including image filename) to backend
+  saveBook(form: NgForm) {
+
+    this.bookService.addBook(this.book).subscribe({
+
+      // Runs if book is successfully saved
+      next: () => {
+
+        // Show success message
+        this.success = 'Successfully created!';
+
+        // Reset form fields
+        form.resetForm();
+
+        // Navigate back to book list page
+        this.router.navigate(['/books'], {
+          state: { addsuccess: 'Book added successfully!' }
+        });
+      },
+
+      // Runs if there is an error saving the book
+      error: (err) => {
+
+        // Display error message
+        this.error = err.error?.message || err.message || 'Error creating book';
+      }
+    });
+  }
+
+
+  // ================= CANCEL FUNCTION =================
+  // Called when user clicks cancel button
   cancel(form: NgForm) {
 
-    // Clear alert messages
+    // Clear messages
     this.resetAlerts();
 
-    // Reset form fields
+    // Reset form inputs
     form.resetForm();
 
-    // Navigate back to books list page
+    // Navigate back to book list page
     this.router.navigate(['/books']);
   }
 
 
-  // Helper function to clear alert messages
+  // ================= RESET ALERTS =================
+  // Clears all UI messages
   resetAlerts() {
     this.error = '';
     this.success = '';
     this.addsuccess = '';
   }
 
+
+  // ================= FILE SELECT HANDLER =================
+  // Triggered when user selects a file from file input
+  onFileSelected(event: Event): void {
+
+    const input = event.target as HTMLInputElement;
+
+    // Check if a file was selected
+    if (input.files && input.files.length > 0) {
+
+      // Store selected file for later upload
+      this.selectedFile = input.files[0];
+    }
+  }
+
+
+  // ================= (OPTIONAL) MANUAL UPLOAD FUNCTION =================
+  // This function is NOT used anymore in your main flow,
+  // but kept here for testing/debugging purposes
+  uploadFile(): void {
+
+    console.log("upload function called");
+
+    // If no file selected → stop
+    if (!this.selectedFile) {
+      console.log('No file selected for upload.');
+      return;
+    }
+
+    // Create FormData and attach file
+    const formData = new FormData();
+    formData.append('image', this.selectedFile);
+
+    // Debug: log FormData contents
+    console.log("FormData content:");
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    // Send upload request
+    this.http.post<any>('http://localhost/BookAPI/upload.php', formData).subscribe(
+
+      // Success
+      response => { 
+        console.log('File uploaded successfully:', response);
+
+        // Save returned filename
+        this.book.coverImage = response.fileName;
+      },
+
+      // Error
+      error =>
+        console.error('Error uploading file:', error)
+    );
+  }
 }

@@ -1,0 +1,51 @@
+<div class = "container">
+  <h2 class="mt-4">Update Book</h2>
+  <form #Form="ngForm" (ngSubmit)="updateBook(Form)">
+    <!-- Form fields for Title -->
+    <div class="form-group mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" id="title" name="title" class="form-control" [(ngModel)]="book.title" 
+      required maxlength="100" #title="ngModel"/>
+      <div *ngIf="Form.controls['title']?.errors?.['maxlength'] && Form.controls['title']?.touched" class="alert-danger mt-1">
+        Title cannot exceed 100 characters or be empty.
+      </div>
+    </div>
+    <!-- Form fields for title-->
+    <div class="form-group">
+      <label for="author" class="form-label">Author</label>
+      <input type="text" id="author" name="author" class="form-control" [(ngModel)]="book.author" required maxlength="50" #author="ngModel"/>
+      <div *ngIf="Form.controls['author']?.errors?.['maxlength'] && Form.controls['author']?.touched" class="alert-danger mt-1">
+        Author cannot exceed 50 characters or be empty.
+      </div>
+    </div>
+    <!-- Form fields for Publisher-->
+    <div class="form-group mb-3">
+      <label for="publisher" class="form-label">Publisher</label>
+      <input type="text" id="publisher" name="publisher" class="form-control" [(ngModel)]="book.publisher" required maxlength="100" #publisher="ngModel"/>
+      <div *ngIf="Form.controls['publisher']?.errors?.['maxlength'] && Form.controls['publisher']?.touched" class="alert-danger mt-1">
+        Publisher cannot exceed 100 characters.
+      </div>
+    </div>
+    <!-- Form fields for pages-->
+    <div class="form-group mb-3">
+      <label for="pages" class="form-label">Pages</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="book.pages" required maxlength="5" #pages="ngModel"/>
+      <div *ngIf="Form.controls['pages']?.errors?.['maxlength'] && Form.controls['pages']?.touched" class="alert-danger mt-1">
+        Pages cannot exceed 5 characters or be empty.
+      </div>
+    </div>
+        <!-- Form fields for image-->
+    <div class="form-group mb-3">
+      <label for="coverImage" class="form-label">Cover Image</label>
+      <input type="file" id="coverImage" name="coverImage" class="form-control" (change)="onFileSelected($event)" required>
+      <div *ngIf="imagePreview" class="mt-3">
+          <img [src]="imagePreview" width="150">
+      </div>
+    </div>
+    <!-- Submit and cancel buttons -->
+    <div>
+      <button type="submit" class="btn btn-primary" [disabled]="Form.invalid">Update Book</button>
+      <button type="button" class="btn btn-secondary ms-2" routerLink="/books">Cancel</button>
+    </div>
+  </form>
+</div>

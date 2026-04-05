@@ -48,7 +48,8 @@ export class BooksComponent implements OnInit {
     title: '',
     author: '',
     pages: '',
-    publisher: ''
+    publisher: '',
+    coverImage: '',
   };
   
   // Variables used to store UI messages

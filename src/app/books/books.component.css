@@ -81,4 +81,10 @@
   border-bottom: 1px solid #ccc;
 
 }
+.book-image {
+  width: 80px;
+  height: 80px;
+  object-fit: fill;   /* fills the space */
+  border-radius: 5px;  /* optional: makes it look nicer */
+}
  
