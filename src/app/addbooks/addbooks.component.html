@@ -1,8 +1,11 @@
 <!-- Main container for the Add Book form -->
 <div class="container">
 
-  <!-- Page heading -->
-  <h2 class="mt-4">Add Book</h2>
+ 
+    <div class="toolbar">
+    <h2>{{ userName }}'s Add Books</h2>
+    <button (click)="authService.logout()" class="btn btn-danger">Logout</button>
+    </div>
 
   <!-- Error message display (shown if error variable has a value) -->
   <div *ngIf="error" class="alert alert-danger">
@@ -12,7 +15,7 @@
   <!-- Success message display (shown if success variable has a value) -->
   <div *ngIf="success" class="alert alert-success">
     {{ success }}
-  </div>
+ </div>
 
   <!-- Angular template-driven form -->
   <!-- #Form creates a reference to the form and ngSubmit triggers addBook() when submitted -->
@@ -133,7 +136,11 @@
     <div class="form-group mb-3">
       <label for="image" class="form-label">Cover</label>
       <input type="file" id="image" name="image" class="form-control" (change)="onFileSelected($event)"/>
-    </div>
+      <div *ngIf="imagePreview" class="mt-3">
+          <img [src]="imagePreview" width="150">
+      </div>
+  </div>
+
 
     </div>
 

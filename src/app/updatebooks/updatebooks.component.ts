@@ -17,6 +17,8 @@ import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common
 // Import routing tools to navigate between pages
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 
+import { Auth } from '../services/auth';
+
 @Component({
   selector: 'app-updatebooks',
   imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
@@ -40,6 +42,7 @@ export class UpdatebooksComponent implements OnInit {
   error = '';      // Stores error message if request fails
   success = '';    // Stores success message
   addsuccess = ''; // Stores message passed during navigation
+  userName = '';  // Stores username for display (if needed)
 
   // Store the selected image file (if user chooses a new one)
   selectedImage: File | null = null;
@@ -53,12 +56,15 @@ export class UpdatebooksComponent implements OnInit {
     private bookService: BookService,  // Handles API calls
     private http: HttpClient,          // Used for sending HTTP requests
     private router: Router,            // Used for navigation
-    private route: ActivatedRoute      // Used to get book ID from URL
+    private route: ActivatedRoute ,     // Used to get book ID from URL
+    public authService: Auth                 // Used to check authentication status
   ) {}
 
 
   // ================= LOAD BOOK DATA =================
   ngOnInit(): void {
+    // Get username from localStorage (if needed for display)
+    this.userName = localStorage.getItem('username') || 'Guest';
 
     // Get book ID from URL (e.g., /update/5 → id = 5)
     this.bookID = + this.route.snapshot.paramMap.get('id')!;

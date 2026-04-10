@@ -17,6 +17,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 // Import routing tools (used to navigate between pages)
 import { RouterModule, Router } from '@angular/router';
 
+// Import authentication service (if needed for auth checks or user info)
+import { Auth } from '../services/auth';
 
 @Component({
   // HTML selector used to include this component
@@ -53,17 +55,51 @@ export class AddbooksComponent implements OnInit {
   error = '';      // Stores error message if request fails
   success = '';    // Stores success message
   addsuccess = ''; // Stores message passed during navigation
+  userName = ''; // Stores username for display (if needed)
 
+  // Stores preview of the image (either existing or newly selected)
+  imagePreview: string | ArrayBuffer | null = null;
 
   // Constructor injects dependencies
   constructor(
     private bookService: BookService,  // Handles API calls for books
     private http: HttpClient,          // Used for uploading files
-    private router: Router             // Used for page navigation
+    private router: Router,             // Used for page navigation
+    public authService: Auth          // Authentication service (if needed for auth checks)
   ) {}
 
   // Lifecycle hook that runs when the component loads
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Get username from localStorage (if needed for display)
+    this.userName = localStorage.getItem('username') || 'Guest';
+  }
+
+
+
+  // ================= FILE SELECT HANDLER =================
+  // Triggered when user selects a file from file input
+  onFileSelected(event: Event): void {
+
+    const input = event.target as HTMLInputElement;
+
+    // Check if a file was selected
+    if (input.files && input.files.length > 0) {
+
+      // Store selected file for later upload
+      this.selectedFile = input.files[0];
+
+    // Create FileReader to preview image before uploading
+      const reader = new FileReader();
+      // When file is loaded → update preview
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+
+      // Convert file to base64 for preview
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+  
 
 
   // ================= ADD BOOK FUNCTION =================
@@ -171,19 +207,7 @@ export class AddbooksComponent implements OnInit {
   }
 
 
-  // ================= FILE SELECT HANDLER =================
-  // Triggered when user selects a file from file input
-  onFileSelected(event: Event): void {
 
-    const input = event.target as HTMLInputElement;
-
-    // Check if a file was selected
-    if (input.files && input.files.length > 0) {
-
-      // Store selected file for later upload
-      this.selectedFile = input.files[0];
-    }
-  }
 
 
   // ================= (OPTIONAL) MANUAL UPLOAD FUNCTION =================

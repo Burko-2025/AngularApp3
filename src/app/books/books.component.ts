@@ -16,6 +16,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 // Import routing modules to allow navigation
 import { RouterModule, Router } from '@angular/router';
 
+// Import authentication service (if needed for auth checks or user info)
+import { Auth } from '../services/auth';
+
 
 @Component({
   // Component selector used in HTML
@@ -56,13 +59,15 @@ export class BooksComponent implements OnInit {
   error = '';       // Stores error message
   success = '';     // Stores success message
   addsuccess = '';  // Stores success message after adding a book
+  userName = ''; // Stores username for display (if needed)
 
 
   // Constructor injects dependencies
   constructor(
     private bookService: BookService, // Service to fetch books from backend
     private http: HttpClient,         // HTTP client for API communication
-    private router: Router            // Router for navigation
+    private router: Router,            // Router for navigation
+    public authService: Auth          // Authentication service (if needed for auth checks)
   ) {
     // No additional initialization required here
   }
@@ -70,6 +75,8 @@ export class BooksComponent implements OnInit {
 
   // Angular lifecycle hook that runs when component initializes
   ngOnInit(): void {
+    // Get username from localStorage (if needed for display)
+    this.userName = localStorage.getItem('username') || 'Guest';
 
     // Retrieve success message passed from another route (like Add Book page)
     this.addsuccess = history.state.addsuccess || '';

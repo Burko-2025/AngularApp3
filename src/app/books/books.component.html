@@ -1,9 +1,12 @@
 <!-- Main container for the book list page -->
 <div id="theList" class="book-list-container">
 
-  <!-- Page heading -->
-  <h2>Book List</h2>
 
+ 
+    <div class="toolbar">
+    <h2>{{ userName }}'s Books</h2>
+    <button (click)="authService.logout()" class="btn btn-danger">Logout</button>
+    </div>
   <!-- Success message shown when an operation like update/delete succeeds -->
   <div *ngIf="success" class="alert alert-success">
     {{ success }}
@@ -13,6 +16,7 @@
   <div *ngIf="addsuccess" class="alert alert-success">
     {{ addsuccess }}
   </div>
+
 
   <!-- Message displayed if there are no books in the list -->
   <p *ngIf="books.length === 0">No books available</p>

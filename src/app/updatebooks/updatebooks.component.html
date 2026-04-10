@@ -1,5 +1,9 @@
 <div class = "container">
-  <h2 class="mt-4">Update Book</h2>
+    <div class="toolbar">
+    <h2>{{ userName }}'s Update Books</h2>
+    <button (click)="authService.logout()" class="btn btn-danger">Logout</button>
+    </div>
+ 
   <form #Form="ngForm" (ngSubmit)="updateBook(Form)">
     <!-- Form fields for Title -->
     <div class="form-group mb-3">
